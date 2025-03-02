@@ -1,0 +1,6 @@
+@ApiBengkel_HostAddress = http://localhost:5117
+
+GET {{ApiBengkel_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
