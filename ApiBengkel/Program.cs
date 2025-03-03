@@ -9,6 +9,7 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddScoped<JasaServisDal>(); // Tambahkan ini untuk DAL
+builder.Services.AddScoped<PelangganDal>();
 
 // Enable CORS for Flutter
 builder.Services.AddCors(options =>
