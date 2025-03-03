@@ -1,5 +1,8 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
+using System.Collections.Generic;
+using System.Threading.Tasks;
+using ApiBengkel.Dal;
+using ApiBengkel;
 
 namespace ApiBengkel.Controllers
 {
@@ -7,43 +10,29 @@ namespace ApiBengkel.Controllers
     [ApiController]
     public class JasaServisController : ControllerBase
     {
-        static private List<JasaServis> jasaServis = new List<JasaServis>
-        {
-            new JasaServis
-            {
-              id_jasaServis = 1,
-              nama_jasaServis = "Ringan",
-              harga = 20000,
-              keterangan = null
-            },
-            new JasaServis
-            {
-              id_jasaServis = 2,
-              nama_jasaServis = "Sedang",
-              harga = 35000,
-              keterangan = null
-            },
-            new JasaServis
-            {
-              id_jasaServis = 4,
-              nama_jasaServis = "berat",
-              harga = 232,
-              keterangan = "fasda"
-            },
-            new JasaServis
-            {
-              id_jasaServis = 5,
-              nama_jasaServis = "promo akbar",
-              harga = 10000,
-              keterangan = "geratis motor"
-            }
-        };
+        private readonly JasaServisDal _jasaServisDal;
 
-        [HttpGet]
-        public ActionResult<List<JasaServis>> GetjasaServis()
+        public JasaServisController(JasaServisDal jasaServisDal)
         {
+            _jasaServisDal = jasaServisDal;
+        }
+
+        // GET: api/JasaServis
+        [HttpGet]
+        public async Task<ActionResult<IEnumerable<JasaServisModel>>> GetJasaServis()
+        {
+            var jasaServis = await _jasaServisDal.GetAllAsync();
             return Ok(jasaServis);
         }
 
+        // GET: api/JasaServis/{id}
+        [HttpGet("{id}")]
+        public async Task<ActionResult<JasaServisModel>> GetJasaServisById(int id)
+        {
+            var jasa = await _jasaServisDal.GetByIdAsync(id);
+            if (jasa == null)
+                return NotFound("Jasa servis tidak ditemukan.");
+            return Ok(jasa);
+        }
     }
 }

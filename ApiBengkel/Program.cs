@@ -1,25 +1,37 @@
-using Scalar.AspNetCore;
+using ApiBengkel.Dal;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
-
 builder.Services.AddControllers();
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
+
+// Enable Swagger
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+builder.Services.AddScoped<JasaServisDal>(); // Tambahkan ini untuk DAL
+
+// Enable CORS for Flutter
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowFlutter",
+        policy => policy.AllowAnyOrigin()
+                        .AllowAnyMethod()
+                        .AllowAnyHeader());
+});
 
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
-    app.MapScalarApiReference();
     app.UseSwagger();
     app.UseSwaggerUI();
 }
 
-app.UseHttpsRedirection();
+//app.UseHttpsRedirection();
+
+// Enable CORS before authorization
+app.UseCors("AllowFlutter");
 
 app.UseAuthorization();
 

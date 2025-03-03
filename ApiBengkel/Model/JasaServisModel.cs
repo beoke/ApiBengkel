@@ -1,6 +1,6 @@
 ﻿namespace ApiBengkel
 {
-    public class JasaServis
+    public class JasaServisModel
     {
         public int id_jasaServis { get; set; }
         public string nama_jasaServis { get; set; }
