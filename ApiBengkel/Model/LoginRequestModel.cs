@@ -2,7 +2,7 @@
 {
     public class LoginRequestModel
     {
-        public string KtpPelanggan { get; set; }
-        public string Password { get; set; }
+        public string ktp_pelanggan { get; set; }
+        public string password { get; set; }
     }
 }

@@ -19,12 +19,12 @@ namespace ApiBengkel.Controllers
         [HttpPost("login")]
         public async Task<IActionResult> Login([FromBody] LoginRequestModel request)
         {
-            if (request == null || string.IsNullOrEmpty(request.KtpPelanggan) || string.IsNullOrEmpty(request.Password))
+            if (request == null || string.IsNullOrEmpty(request.ktp_pelanggan) || string.IsNullOrEmpty(request.password))
             {
                 return BadRequest(new { message = "No KTP dan password harus diisi!" });
             }
 
-            var pelanggan = await _pelangganDal.GetByKtpAndPasswordAsync(request.KtpPelanggan, request.Password);
+            var pelanggan = await _pelangganDal.GetByKtpAndPasswordAsync(request.ktp_pelanggan, request.password);
 
             if (pelanggan == null)
             {
