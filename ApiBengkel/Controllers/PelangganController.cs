@@ -21,22 +21,22 @@ namespace ApiBengkel.Controllers
         {
             if (request == null || string.IsNullOrEmpty(request.ktp_pelanggan) || string.IsNullOrEmpty(request.password))
             {
-                return BadRequest(new { message = "No KTP dan password harus diisi!" });
+                return BadRequest(new { success = false, message = "No KTP dan password harus diisi!" });
             }
 
             var pelanggan = await _pelangganDal.GetByKtpAndPasswordAsync(request.ktp_pelanggan, request.password);
 
             if (pelanggan == null)
             {
-                return Unauthorized(new { message = "No KTP atau password salah!" });
+                return Unauthorized(new { success = false, message = "No KTP atau password salah!" });
             }
 
             return Ok(new
             {
-                message = "Login berhasil",
+                success = true,
+              //  message = "Login berhasil",
                 pelanggan.ktp_pelanggan,
-                //pelanggan.email,
-                pelanggan.nama_pelanggan
+                pelanggan.nama_pelanggan,
             });
         }
         // GET: Ambil data pelanggan berdasarkan No KTP dan Password
@@ -48,6 +48,20 @@ namespace ApiBengkel.Controllers
             if (pelanggan == null)
             {
                 return NotFound(new { message = "Pelanggan tidak ditemukan atau password salah!" });
+            }
+
+            return Ok(pelanggan);
+        }
+
+        // GET: Ambil seluruh data pelanggan berdasarkan No KTP
+        [HttpGet("profile/{ktp_pelanggan}")]
+        public async Task<IActionResult> GetPelangganProfile(string ktp_pelanggan)
+        {
+            var pelanggan = await _pelangganDal.GetByKtpAsync(ktp_pelanggan);
+
+            if (pelanggan == null)
+            {
+                return NotFound(new { message = "Pelanggan tidak ditemukan!" });
             }
 
             return Ok(pelanggan);

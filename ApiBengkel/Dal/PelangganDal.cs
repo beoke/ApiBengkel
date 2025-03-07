@@ -31,8 +31,15 @@ namespace ApiBengkel.Dal
         public async Task<PelangganModel> GetByKtpAndPasswordAsync(string noKtp, string password)
         {
             using var connection = CreateConnection();
-            string query = "SELECT * FROM Pelanggan WHERE ktp_pelanggan = @noKtp AND password = @password";
+            string query = "SELECT * FROM Pelanggan WHERE ktp_pelanggan = @noKtp ";
             return await connection.QueryFirstOrDefaultAsync<PelangganModel>(query, new { noKtp, password });
         }
+        public async Task<PelangganModel> GetByKtpAsync(string ktp_pelanggan)
+        {
+            var query = "SELECT * FROM Pelanggan WHERE ktp_pelanggan = @Ktp";
+            using var connection = new SqlConnection(_connectionString);
+            return await connection.QueryFirstOrDefaultAsync<PelangganModel>(query, new { Ktp = ktp_pelanggan });
+        }
+
     }
 }
