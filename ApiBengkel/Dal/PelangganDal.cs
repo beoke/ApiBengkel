@@ -36,7 +36,7 @@ namespace ApiBengkel.Dal
         }
         public async Task<PelangganModel> GetByKtpAsync(string ktp_pelanggan)
         {
-            var query = "SELECT * FROM Pelanggan WHERE ktp_pelanggan = @Ktp";
+            var query = "SELECT * FROM Pelanggan WHERE ktp_pelanggan = @no_ktp";
             using var connection = new SqlConnection(_connectionString);
             return await connection.QueryFirstOrDefaultAsync<PelangganModel>(query, new { Ktp = ktp_pelanggan });
         }
