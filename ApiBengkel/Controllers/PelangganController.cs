@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity.Data;
 using Microsoft.AspNetCore.Mvc;
 using ApiBengkel.Model;
+using System.ComponentModel.DataAnnotations;
 
 namespace ApiBengkel.Controllers
 {
@@ -68,6 +69,48 @@ namespace ApiBengkel.Controllers
         }
 
 
+        [HttpPut("update/{id}")]
+        public async Task<IActionResult> UpdatePelanggan(int id, [FromBody] PelangganDto pelangganDto)
+        {
+            if (pelangganDto == null || id != pelangganDto.Id)
+            {
+                return BadRequest(new { message = "Invalid request data" });
+            }
+
+            var pelanggan = await _context.Pelanggan.FindAsync(id);
+            if (pelanggan == null)
+            {
+                return NotFound(new { message = "Pelanggan tidak ditemukan" });
+            }
+
+            pelanggan.NamaPelanggan = pelangganDto.NamaPelanggan;
+            pelanggan.Email = pelangganDto.Email;
+            pelanggan.Alamat = pelangganDto.Alamat;
+            pelanggan.NoTelp = pelangganDto.NoTelp;
+
+            await _context.SaveChangesAsync();
+
+            return Ok(new { message = "Data pelanggan berhasil diperbarui", data = pelanggan });
+        }
+
     }
 
+}
+public class PelangganDto
+{
+    public int Id { get; set; }
+    public string NamaPelanggan { get; set; }
+    public string Email { get; set; }
+    public string Alamat { get; set; }
+    public string NoTelp { get; set; }
+}
+
+public class Pelanggan
+{
+    [Key]
+    public int Id { get; set; }
+    public string NamaPelanggan { get; set; }
+    public string Email { get; set; }
+    public string Alamat { get; set; }
+    public string NoTelp { get; set; }
 }
