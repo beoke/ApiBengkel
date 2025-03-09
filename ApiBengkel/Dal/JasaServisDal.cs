@@ -5,19 +5,13 @@ using System.Data;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Configuration;
 using ApiBengkel;
+using ApiBengkel.Helper;
 
 namespace ApiBengkel.Dal
 {
     public class JasaServisDal
     {
-        private readonly string _connectionString;
-
-        public JasaServisDal(IConfiguration configuration)
-        {
-            _connectionString = configuration.GetConnectionString("DefaultConnection");
-        }
-
-        private IDbConnection CreateConnection() => new SqlConnection(_connectionString);
+        private IDbConnection CreateConnection() => new SqlConnection(Conn.connStr);
 
         // Mendapatkan semua data jasa servis
         public async Task<IEnumerable<JasaServisModel>> GetAllAsync()
