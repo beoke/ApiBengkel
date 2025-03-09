@@ -16,14 +16,17 @@ namespace ApiBengkel.Controllers
             _kendaraanDal = kendaraanDal;
         }
         [HttpGet("kendaraan/{ktp_pelanggan}")]
-        public IActionResult GetKendaraanByPelanggan(string ktp_pelanggan)
+        public async Task<IActionResult> GetKendaraanByPelanggan(string ktp_pelanggan)
         {
-            var kendaraanList = _kendaraanDal.ListDataPelanggan(ktp_pelanggan);
-            if (!kendaraanList.Any())
+            var kendaraanList = await _kendaraanDal.ListKendaraanPelangganAsync(ktp_pelanggan);
+
+            if (kendaraanList == null || !kendaraanList.Any())
             {
                 return NotFound(new { message = "Tidak ada kendaraan ditemukan untuk pelanggan ini." });
             }
+
             return Ok(kendaraanList);
         }
+
     }
 }
