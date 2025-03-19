@@ -28,5 +28,13 @@ namespace ApiBengkel.Dal
             string query = "SELECT * FROM JasaServis WHERE id_jasaServis = @Id";
             return await connection.QueryFirstOrDefaultAsync<JasaServisModel>(query, new { Id = id });
         }
+        public async Task<string?> GetJasaServisNameByIdAsync(int id)
+        {
+            using var connection = CreateConnection();
+            string query = "SELECT nama_jasaServis FROM JasaServis WHERE id_jasaServis = @Id";
+
+            return await connection.QueryFirstOrDefaultAsync<string>(query, new { Id = id });
+        }
+
     }
 }
