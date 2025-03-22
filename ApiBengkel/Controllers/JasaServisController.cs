@@ -39,13 +39,10 @@ namespace ApiBengkel.Controllers
         public async Task<ActionResult<string>> GetJasaServisName(int id)
         {
             var jasaServisName = await _jasaServisDal.GetJasaServisNameByIdAsync(id);
-
             if (jasaServisName == null)
                 return NotFound("Jasa servis tidak ditemukan.");
 
             return Ok(jasaServisName);
         }
-
-
     }
 }
